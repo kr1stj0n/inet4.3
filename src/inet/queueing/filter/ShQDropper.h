@@ -26,7 +26,7 @@ namespace inet {
 namespace queueing {
 
 /**
- * Implementation of Random Early Detection (RED).
+ * Implementation of Shadow Queue (ShQ).
  */
 class INET_API ShQDropper : public PacketFilterBase
 {
@@ -34,19 +34,19 @@ class INET_API ShQDropper : public PacketFilterBase
     enum ShQResult { QUEUE_FULL, RANDOMLY_MARK, RANDOMLY_NOT_MARK };
 
   protected:
-    double limit = 0.0;
+    double limit    = 0.0;
     double interval = NaN;
-    double maxp = NaN;
-    double alpha = NaN;
-    double pkrate = NaN;
+    double maxp     = NaN;
+    double alpha    = NaN;
+    double pkrate   = NaN;
+    bool useEcn     = false;
 
-    double avgRate = 0.0;
-    double curRate = 0.0;
+    double avgRate  = 0.0;
+    double curRate  = 0.0;
     simtime_t q_time;
     simtime_t r_time;
 
     int packetCapacity = -1;
-    bool useEcn = false;
     bool markNext = false;
     mutable ShQResult lastResult;
 

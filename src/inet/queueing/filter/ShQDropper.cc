@@ -64,7 +64,7 @@ ShQDropper::ShQResult ShQDropper::doRandomEarlyDetection(const Packet *packet)
     int queueLength = collection->getNumPackets();
 
     if (queueLength >= packetCapacity) { // maxth is also the "hard" limit
-        EV_DEBUG << "Queue length >= capacity" << EV_FIELD(queueLength) << EV_FIELD(packetCapacity) << EV_ENDL;
+        EV_INFO << "Queue length >= capacity" << EV_FIELD(queueLength) << EV_FIELD(packetCapacity) << EV_ENDL;
         return QUEUE_FULL;
     }
 
@@ -89,10 +89,11 @@ ShQDropper::ShQResult ShQDropper::doRandomEarlyDetection(const Packet *packet)
     }
 
     if (dblrand() < pb) {
-        /* EV_DEBUG << "Random early packet detected" << EV_FIELD(averageQueueLength, avg) << EV_FIELD(probability, pb) << EV_ENDL; */
+        EV_INFO << "Packet marked with ECN, current prob" << EV_FIELD(probability, pb) << EV_ENDL;
         return RANDOMLY_MARK;
-    } else
+    } else {
         return RANDOMLY_NOT_MARK;
+    }
 }
 
 bool ShQDropper::matchesPacket(const Packet *packet) const
