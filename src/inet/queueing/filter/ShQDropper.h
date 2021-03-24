@@ -35,11 +35,11 @@ class INET_API ShQDropper : public PacketFilterBase
 
   protected:
     double limit    = 0.0;
-    double interval = NaN;
+    simtime_t interval;
     double maxp     = NaN;
     double alpha    = NaN;
     double pkrate   = NaN;
-    bool useEcn     = false;
+    bool useEcn     = true;
 
     double avgRate  = 0.0;
     double curRate  = 0.0;

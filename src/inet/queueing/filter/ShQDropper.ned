@@ -48,13 +48,13 @@ simple ShQDropper extends PacketFilterBase
 {
     parameters:
         string collectionModule = default("");
-        double limit = default(1000);             // max queue capacity
-        double interval = default(0.01);          // interval in sec.
-        double maxp = default(0.95);              // maximum value for pbs
-        double alpha = default(0.2);              // alpha value between [0, 1]
-        double pkrate = default(150);             // average packet rate for calculations when queue is empty
-        bool useEcn = default(true);              // if enabled, packets are marked with ECN if applicable
-        int packetCapacity = default(int(limit)); // packets are dropped if queue length is greater
+        double limit = default(1000);              // max queue capacity
+        double interval @unit(s) = default(0.01s); // interval in sec.
+        double maxp = default(0.95);               // maximum value for pbs
+        double alpha = default(0.2);               // alpha value between [0, 1]
+        double pkrate = default(150);              // average packet rate for calculations when queue is empty
+        bool useEcn = default(true);               // if enabled, packets are marked with ECN if applicable
+        int packetCapacity = default(int(limit));  // packets are dropped if queue length is greater
         @class(ShQDropper);
         @display("i=block/downarrow");
 

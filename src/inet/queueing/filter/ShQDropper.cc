@@ -60,7 +60,7 @@ void ShQDropper::initialize(int stage)
 
 ShQDropper::ShQResult ShQDropper::doRandomEarlyDetection(const Packet *packet)
 {
-   double pb = 0.0;
+    double pb = 0.0;
     int queueLength = collection->getNumPackets();
 
     if (queueLength >= packetCapacity) { // maxth is also the "hard" limit
@@ -70,26 +70,27 @@ ShQDropper::ShQResult ShQDropper::doRandomEarlyDetection(const Packet *packet)
 
     curRate += (double) packet->getByteLength();
 
-    const double ct = SIMTIME_DBL(simTime());
-    if (ct >= SIMTIME_DBL(r_time) + interval) {
-        double duration = ct - SIMTIME_DBL(r_time);
+    const simtime_t now = simTime();
+    if (now >= r_time + interval) {
+        double duration = SIMTIME_DBL(now - r_time);
         curRate += queueLength * 1500;
         avgRate = (1.0 - alpha) * avgRate + alpha * curRate;
         pb = maxp * (avgRate / (pkrate * duration));
+        EV_INFO << "Calculated" << EV_FIELD(probability, pb) << EV_ENDL;
         if (pb < 0.0)
             pb = 0;
         else if (pb >= maxp)
             pb = 1.0;
 
         emit(avgMarkingProbSignal, pb);
-        emit(avgOutputRateSignal, avgRate * (interval / duration));
+        emit(avgOutputRateSignal, avgRate * (SIMTIME_DBL(interval) / duration));
 
         r_time = simTime();
         curRate = 0;
     }
 
     if (dblrand() < pb) {
-        EV_INFO << "Packet marked with ECN, current prob" << EV_FIELD(probability, pb) << EV_ENDL;
+        EV_INFO << "ECN Marking" << EV_FIELD(probability, pb) << EV_ENDL;
         return RANDOMLY_MARK;
     } else {
         return RANDOMLY_NOT_MARK;
