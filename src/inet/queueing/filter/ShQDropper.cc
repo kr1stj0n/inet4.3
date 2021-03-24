@@ -52,9 +52,10 @@ void ShQDropper::initialize(int stage)
         if (collection == nullptr)
             collection = getModuleFromPar<IPacketCollection>(par("collectionModule"), this);
 
-        markingProbSignal = registerSignal("markingProb");
+        packetMarkedSignal   = registerSignal("packetMarked");
+        markingProbSignal    = registerSignal("markingProb");
         avgMarkingProbSignal = registerSignal("avgMarkingProb");
-        avgOutputRateSignal = registerSignal("avgOutputRate");
+        avgOutputRateSignal  = registerSignal("avgOutputRate");
     }
 }
 
@@ -91,6 +92,7 @@ ShQDropper::ShQResult ShQDropper::doRandomEarlyDetection(const Packet *packet)
 
     if (dblrand() < pb) {
         EV_INFO << "ECN Marking" << EV_FIELD(probability, pb) << EV_ENDL;
+        emit(packetMarkedSignal, packet);
         return RANDOMLY_MARK;
     } else {
         return RANDOMLY_NOT_MARK;
@@ -145,10 +147,6 @@ void ShQDropper::pushOrSendPacket(Packet *packet, cGate *gate,
                                   IPassivePacketSink *consumer)
 {
     PacketFilterBase::pushOrSendPacket(packet, gate, consumer);
-    // TD: Set the time stamp q_time when the queue gets empty.
-    const int queueLength = collection->getNumPackets();
-    if (queueLength == 0)
-        q_time = simTime();
 }
 
 } // namespace queueing

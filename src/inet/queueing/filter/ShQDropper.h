@@ -43,11 +43,10 @@ class INET_API ShQDropper : public PacketFilterBase
 
     double avgRate  = 0.0;
     double curRate  = 0.0;
-    simtime_t q_time;
     simtime_t r_time;
 
     int packetCapacity = -1;
-    bool markNext = false;
+    bool markNext      = false;
     mutable ShQResult lastResult;
 
     simsignal_t markingProbSignal;

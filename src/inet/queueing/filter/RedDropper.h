@@ -52,6 +52,12 @@ class INET_API RedDropper : public PacketFilterBase
     IPacketCollection *collection = nullptr;
 
   protected:
+    simsignal_t packetMarkedSignal;
+    simsignal_t markingProbSignal;
+    simsignal_t avgMarkingProbSignal;
+    simsignal_t avgOutputRateSignal;
+
+  protected:
     virtual void initialize(int stage) override;
     virtual RedResult doRandomEarlyDetection(const Packet *packet);
     virtual void processPacket(Packet *packet) override;

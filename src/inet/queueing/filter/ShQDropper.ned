@@ -58,14 +58,14 @@ simple ShQDropper extends PacketFilterBase
         @class(ShQDropper);
         @display("i=block/downarrow");
 
-        @signal[markingProb](type=double);
-        @statistic[marked](title="marking Prob"; source="markingProb"; record=mean; interpolationmode=none);
-
         @signal[avgMarkingProb](type=double);
-        @statistic[avgMarked](title="avg marking Prob"; source="avgMarkingProb"; record=vector,mean; interpolationmode=none);
+        @statistic[avgMarked](title="avg. marking probability"; source="avgMarkingProb"; record=vector,mean; interpolationmode=none);
 
         @signal[avgOutputRate](type=double);
-        @statistic[avgRate](title="avg output rate"; source="avgOutputRate"; record=vector,mean; interpolationmode=none);
+        @statistic[avgRate](title="avg. output rate"; source="avgOutputRate"; record=vector,mean; interpolationmode=none);
+
+        @signal[packetMarked](type=inet::Packet);
+        @statistic[packetMarked](title="packets marked"; source=packetMarked; record=count,sum(packetBytes),vector(packetBytes); interpolationmode=none);
 
         @signal[packetDropped](type=inet::Packet);
         @statistic[packetDropCongestion](title="packet drop: congestion"; source=packetDropReasonIsCongestion(packetDropped); record=count,sum(packetBytes),vector(packetBytes); interpolationmode=none);
