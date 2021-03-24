@@ -49,6 +49,7 @@ class INET_API ShQDropper : public PacketFilterBase
     bool markNext      = false;
     mutable ShQResult lastResult;
 
+    simtime_t packetMarkedSignal;
     simsignal_t markingProbSignal;
     simsignal_t avgMarkingProbSignal;
     simsignal_t avgOutputRateSignal;
