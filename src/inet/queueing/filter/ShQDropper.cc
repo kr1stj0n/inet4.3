@@ -76,8 +76,8 @@ ShQDropper::ShQResult ShQDropper::doRandomEarlyDetection(const Packet *packet)
         double duration = SIMTIME_DBL(now - r_time);
         curRate += queueLength * 1500;
         avgRate = (1.0 - alpha) * avgRate + alpha * curRate;
+
         pb = maxp * (avgRate / (pkrate * duration));
-        EV_INFO << "Calculated" << EV_FIELD(probability, pb) << EV_ENDL;
         if (pb < 0.0)
             pb = 0;
         else if (pb >= maxp)
@@ -91,7 +91,6 @@ ShQDropper::ShQResult ShQDropper::doRandomEarlyDetection(const Packet *packet)
     }
 
     if (dblrand() < pb) {
-        EV_INFO << "ECN Marking" << EV_FIELD(probability, pb) << EV_ENDL;
         emit(packetMarkedSignal, packet);
         return RANDOMLY_MARK;
     } else {

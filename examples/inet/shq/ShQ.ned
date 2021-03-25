@@ -22,48 +22,50 @@ network ShQ
         @display("bgb=740,580");
 
     types:
-        channel NormalP extends DatarateChannel
-        {
-            parameters:
-                datarate = 100Mbps;
-                delay = 3ms;
-                per = 0;
-                ber = 0;
-        }
-        channel H2SW extends ThruputMeteringChannel
+        channel wan extends ThruputMeteringChannel
         {
             parameters:
                 datarate = 1000Mbps;
+                delay = 3ms;
+                per = 0;
+                ber = 0;
+                thruputDisplayFormat = default("b B U");
+        }
+        channel lan extends ThruputMeteringChannel
+        {
+            parameters:
+                datarate = 100Mbps;
                 delay = 1ms;
                 per = 0;
                 ber = 0;
-                thruputDisplayFormat = default("B");
+                thruputDisplayFormat = default("b B U");
         }
 
     submodules:
         routerCore: Router {
             parameters:
-                @display("p=434.496,207.90399;i=abstract/router");
+                @display("p=405.296,207.90399;i=abstract/router");
         }
         client11: StandardHost {
-            @display("p=73.584,154.176");
+            @display("p=59.568,136.65599");
         }
         client12: StandardHost {
-            @display("p=73.584,254.624");
+            @display("p=59.568,297.84");
         }
         configurator: Ipv4NetworkConfigurator {
             @display("p=523.8462,35.384617");
         }
         client21: StandardHost {
-            @display("p=580.496,207.90399");
+            @display("p=685.61597,207.90399");
         }
         ethernetSwitch: EthernetSwitch {
-            @display("p=287.328,206.736");
+            @display("p=184.54399,206.736");
         }
     connections:
-        client11.ethg++ <--> H2SW <--> ethernetSwitch.ethg++;
-        client12.ethg++ <--> H2SW <--> ethernetSwitch.ethg++;
-        ethernetSwitch.ethg++ <--> NormalP <--> routerCore.ethg++;
-        routerCore.ethg++ <--> NormalP <--> client21.ethg++;
+        client11.ethg++ <--> lan <--> ethernetSwitch.ethg++;
+        client12.ethg++ <--> lan <--> ethernetSwitch.ethg++;
+        ethernetSwitch.ethg++ <--> lan <--> routerCore.ethg++;
+        routerCore.ethg++ <--> wan <--> client21.ethg++;
+
 }
 

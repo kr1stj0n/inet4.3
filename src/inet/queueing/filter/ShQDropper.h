@@ -60,7 +60,8 @@ class INET_API ShQDropper : public PacketFilterBase
     virtual void initialize(int stage) override;
     virtual ShQResult doRandomEarlyDetection(const Packet *packet);
     virtual void processPacket(Packet *packet) override;
-    virtual void pushOrSendPacket(Packet *packet, cGate *gate, IPassivePacketSink *consumer) override;
+    virtual void pushOrSendPacket(Packet *packet, cGate *gate,
+                                   IPassivePacketSink *consumer) override;
 
   public:
     virtual bool matchesPacket(const Packet *packet) const override;
