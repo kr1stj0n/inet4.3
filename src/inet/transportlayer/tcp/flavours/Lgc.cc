@@ -16,7 +16,7 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
 
-#include "inet/transportlayer/tcp/flavours/DcTcp.h"
+#include "inet/transportlayer/tcp/flavours/Lgc.h"
 
 #include <algorithm> // min,max
 
@@ -25,24 +25,28 @@
 namespace inet {
 namespace tcp {
 
-Register_Class(DcTcp);
+Register_Class(Lgc);
 
-simsignal_t DcTcp::loadSignal = cComponent::registerSignal("load"); // will record load
-simsignal_t DcTcp::calcLoadSignal = cComponent::registerSignal("calcLoad"); // will record total number of RTOs
-simsignal_t DcTcp::markingProbSignal = cComponent::registerSignal("markingProb"); // will record marking probability
+simsignal_t Lgc::loadSignal = cComponent::registerSignal("load"); // will record load
+simsignal_t Lgc::calcLoadSignal = cComponent::registerSignal("calcLoad"); // will record total number of RTOs
+simsignal_t Lgc::markingProbSignal = cComponent::registerSignal("markingProb"); // will record marking probability
 
-DcTcp::DcTcp() : TcpReno(),
+Lgc::Lgc() : TcpReno(),
     state((DcTcpStateVariables *&)TcpAlgorithm::state)
 {
 }
 
-void DcTcp::initialize()
+void Lgc::initialize()
 {
     TcpReno::initialize();
-    state->dctcp_gamma = conn->getTcpMain()->par("dctcpGamma");
+    state->lgc_alpha = conn->getTcpMain()->par("lgcAlpha");
+    state->lgc_phi = conn->getTcpMain()->par("lgcPhi");
+    state->lgc_logP = conn->getTcpMain()->par("lgcLogP");
+    state->lgc_coef = conn->getTcpMain()->par("lgcCoef");
+    state->lgc_datarate = conn->getTcpMain()->par("lgcDataRate");
 }
 
-void DcTcp::receivedDataAck(uint32_t firstSeqAcked)
+void Lgc::receivedDataAck(uint32_t firstSeqAcked)
 {
     TcpTahoeRenoFamily::receivedDataAck(firstSeqAcked);
 
@@ -207,14 +211,14 @@ void DcTcp::receivedDataAck(uint32_t firstSeqAcked)
     sendData(false);
 }
 
-bool DcTcp::shouldMarkAck()
+bool Lgc::shouldMarkAck()
 {
     // RFC 8257 3.2 page 6
     // When sending an ACK, the ECE flag MUST be set if and only if DCTCP.CE is true.
     return state->dctcp_ce;
 }
 
-void DcTcp::processEcnInEstablished()
+void Lgc::processEcnInEstablished()
 {
     if (state && state->ect) {
         // RFC 8257 3.2.1

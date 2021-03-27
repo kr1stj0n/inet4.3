@@ -86,5 +86,6 @@ simple TcpConnection {
         @statistic[load](record=vector; interpolationmode=sample-hold);    // will record load (currently only with DcTcp)
         @statistic[calcLoad](record=vector; interpolationmode=sample-hold);    // will record calcLoad (currently only with DcTcp)
         @statistic[markingProb](record=vector; interpolationmode=sample-hold);    // will record marking probability (currently only with DcTcp)
+        // TODO Add statistics for Lgc
 }
 

@@ -38,7 +38,7 @@ class INET_API ShQDropper : public PacketFilterBase
     simtime_t interval;
     double maxp     = NaN;
     double alpha    = NaN;
-    double pkrate   = NaN;
+    double datarate = NaN;
     bool useEcn     = true;
 
     double avgRate  = 0.0;

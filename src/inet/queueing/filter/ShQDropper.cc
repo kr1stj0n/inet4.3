@@ -42,9 +42,9 @@ void ShQDropper::initialize(int stage)
         alpha = par("alpha");
         if (alpha < 0.0 || alpha > 1.0)
             throw cRuntimeError("Invalid value for alpha parameter: %g", alpha);
-        pkrate = par("pkrate");
-        if (pkrate < 0.0)
-            throw cRuntimeError("Invalid value for pkrate parameter: %g", pkrate);
+        datarate = par("datarate");
+        if (datarate < 0.0)
+            throw cRuntimeError("Invalid value for datarate parameter: %g", datarate);
         useEcn = par("useEcn");
         packetCapacity = par("packetCapacity");
         auto outputGate = gate("out");
@@ -74,10 +74,10 @@ ShQDropper::ShQResult ShQDropper::doRandomEarlyDetection(const Packet *packet)
     const simtime_t now = simTime();
     if (now >= r_time + interval) {
         double duration = SIMTIME_DBL(now - r_time);
-        curRate += queueLength * 1500;
+        curRate += queueLength * 1500 * 8;      /* assuming 1500-byte packets */
         avgRate = (1.0 - alpha) * avgRate + alpha * curRate;
 
-        pb = maxp * (avgRate / (pkrate * duration));
+        pb = maxp * (avgRate / (datarate * duration));
         if (pb < 0.0)
             pb = 0;
         else if (pb >= maxp)

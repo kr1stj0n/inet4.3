@@ -48,37 +48,25 @@ simple ShQDropper extends PacketFilterBase
 {
     parameters:
         string collectionModule = default("");
-        double limit = default(1000);              // max queue capacity
-        double interval @unit(s) = default(0.01s); // interval in sec.
-        double maxp = default(1.0);                // maximum value for pbs
-        double alpha = default(0.2);               // alpha value between [0, 1]
-        double pkrate = default(8333.3333);        // default bandwidth 100Mbps
-        bool useEcn = default(true);               // enable ECN
-        int packetCapacity = default(int(limit));  // (int) max queue capacity
+        double limit = default(1000);                  // max queue capacity
+        double interval @unit(s) = default(0.01s);     // interval in sec.
+        double maxp = default(0.1);                    // maximum value for pbs
+        double alpha = default(0.2);                   // alpha value between [0, 1]
+        double datarate @unit(bps) = default(100Mbps); // default bandwidth 100Mbps
+        bool useEcn = default(true);                   // enable ECN
+        int packetCapacity = default(int(limit));      // (int) max queue capacity
         @class(ShQDropper);
         @display("i=block/downarrow");
 
         @signal[avgMarkingProb](type=double);
-        @statistic[avgMarked](title="avg. marking probability";
-                              source="avgMarkingProb";
-                              record=vector,mean;
-                              interpolationmode=none);
+        @statistic[avgMarked](title="avg. marking probability"; source="avgMarkingProb"; record=vector,mean; interpolationmode=none);
 
         @signal[avgOutputRate](type=double);
-        @statistic[avgRate](title="avg. output rate";
-                            source="avgOutputRate";
-                            record=vector,mean;
-                            interpolationmode=none);
+        @statistic[avgRate](title="avg. output rate"; source="avgOutputRate"; record=vector,mean; interpolationmode=none);
 
         @signal[packetMarked](type=inet::Packet);
-        @statistic[packetMarked](title="packets marked";
-                                 source=packetMarked;
-                                 record=count,sum(packetBytes),vector(packetBytes);
-                                 interpolationmode=none);
+        @statistic[packetMarked](title="packets marked"; source=packetMarked; record=count,sum(packetBytes),vector(packetBytes); interpolationmode=none);
 
         @signal[packetDropped](type=inet::Packet);
-        @statistic[packetDropCongestion](title="packet drop: congestion";
-                                         source=packetDropReasonIsCongestion(packetDropped);
-                                         record=count,sum(packetBytes),vector(packetBytes);
-                                         interpolationmode=none);
+        @statistic[packetDropCongestion](title="packet drop: congestion"; source=packetDropReasonIsCongestion(packetDropped); record=count,sum(packetBytes),vector(packetBytes); interpolationmode=none);
 }

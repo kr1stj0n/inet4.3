@@ -25,23 +25,30 @@ namespace tcp {
 
 LgcFamilyStateVariables::LgcFamilyStateVariables()
 {
-    dctcp_ce = false;
-    dctcp_alpha = 0;
-    dctcp_windEnd = snd_una;
-    dctcp_bytesAcked = 0;
-    dctcp_bytesMarked = 0;
-    dctcp_gamma = 0.0625; // 1/16 (backup 0.16) TODO make it NED parameter;
+    lgc_alpha = 0.2;
+    lgc_phi = 2.78;
+    lgc_logP = 1.4;
+    lgc_coef = 20;
+    lgc_datarate = 100000000; // 100Mbps
+    lgc_windEnd = snd_una;
+    lgc_bytesMarked = 0;
+    lgc_bytesAcked = 0;
+    lgc_fraction = 0.0;
 }
 
 std::string LgcFamilyStateVariables::str() const
 {
     std::stringstream out;
     out << TcpTahoeRenoFamilyStateVariables::str();
-    out << " dctcp_alpha=" << dctcp_alpha;
-    out << " dctcp_windEnd=" << dctcp_windEnd;
-    out << " dctcp_bytesAcked=" << dctcp_bytesAcked;
-    out << " dctcp_bytesMarked=" << dctcp_bytesMarked;
-    out << " dctcp_gamma=" << dctcp_gamma;
+    out << " lgc_alpha=" << lgc_alpha;
+    out << " lgc_phi=" << lgc_phi;
+    out << " lgc_logP=" << lgc_logP;
+    out << " lgc_coef=" << lgc_coef;
+    out << " lgc_datarate=" << lgc_datarate;
+    out << " lgc_windEnd=" << lgc_windEnd;
+    out << " lgc_bytesAcked=" << lgc_bytesAcked;
+    out << " lgc_bytesMarked=" << lgc_bytesMarked;
+    out << " lgc_fraction=" << lgc_fraction;
 
     return out.str();
 }
@@ -49,12 +56,16 @@ std::string LgcFamilyStateVariables::str() const
 std::string LgcFamilyStateVariables::detailedInfo() const
 {
     std::stringstream out;
-    out << TcpTahoeRenoFamilyStateVariables::detailedInfo();
-    out << " dctcp_alpha=" << dctcp_alpha;
-    out << " dctcp_windEnd=" << dctcp_windEnd;
-    out << " dctcp_bytesAcked=" << dctcp_bytesAcked;
-    out << " dctcp_bytesMarked=" << dctcp_bytesMarked;
-    out << " dctcp_gamma=" << dctcp_gamma;
+    out << TcpTahoeRenoFamilyStateVariables::str();
+    out << " lgc_alpha=" << lgc_alpha;
+    out << " lgc_phi=" << lgc_phi;
+    out << " lgc_logP=" << lgc_logP;
+    out << " lgc_coef=" << lgc_coef;
+    out << " lgc_datarate=" << lgc_datarate;
+    out << " lgc_windEnd=" << lgc_windEnd;
+    out << " lgc_bytesAcked=" << lgc_bytesAcked;
+    out << " lgc_bytesMarked=" << lgc_bytesMarked;
+    out << " lgc_fraction=" << lgc_fraction;
     return out.str();
 }
 

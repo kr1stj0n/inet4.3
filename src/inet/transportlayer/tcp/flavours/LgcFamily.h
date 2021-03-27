@@ -35,13 +35,15 @@ class INET_API LgcFamilyStateVariables : public TcpTahoeRenoFamilyStateVariables
     virtual std::string detailedInfo() const override;
 
     // LGC
-    // TODO
-    bool dctcp_ce;
-    uint32_t dctcp_windEnd;
-    uint32_t dctcp_bytesAcked;
-    uint32_t dctcp_bytesMarked; // amount of bytes marked
-    double dctcp_alpha;
-    double dctcp_gamma;
+    double lgc_alpha;
+    double lgc_phi;
+    double lgc_logP;
+    double lgc_coef;
+    double lgc_datarate;
+    uint32_t lgc_windEnd;
+    uint32_t lgc_bytesMarked; // amount of bytes marked
+    uint32_t lgc_bytesAcked;
+    double lgc_fraction;
 };
 
 /**

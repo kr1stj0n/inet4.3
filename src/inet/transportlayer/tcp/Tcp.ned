@@ -207,7 +207,7 @@ simple Tcp like ITcp
         bool timestampSupport = default(false); // Timestamps (RFC 1323) support (header option) (TS will be enabled for a connection if both endpoints support it)
         int mss = default(536); // Maximum Segment Size (RFC 793) (header option)
         int msl @unit(s) = default(120s);   // Maximum Segment Lifetime
-        string tcpAlgorithmClass @enum("TcpVegas", "TcpWestwood", "TcpNewReno", "TcpReno", "TcpTahoe", "TcpNoCongestionControl") = default("TcpReno");
+        string tcpAlgorithmClass @enum("Lgc", "DcTcp", "TcpVegas", "TcpWestwood", "TcpNewReno", "TcpReno", "TcpTahoe", "TcpNoCongestionControl") = default("TcpReno");
         bool useDataNotification = default(false); // turn the notifications for arrived data on or off
         int dupthresh = default(3); // used for TcpTahoe, TcpReno and SACK (RFC 3517) DO NOT change unless you really know what you are doing
         int initialSsthresh = default(0xFFFFFFFF); // initial value for Slow Start threshold used in TahoeRenoFamily. The initial value of ssthresh SHOULD be set arbitrarily high (e.g.,to the size of the largest possible advertised window) Without user interaction there is no limit...
@@ -215,6 +215,14 @@ simple Tcp like ITcp
         double stopOperationTimeout @unit(s) = default(2s);    // timeout value for lifecycle stop operation
         bool ecnWillingness = default(false);	// true if willing to use ECN
         double dctcpGamma = default(0.0625); // A fixed estimation gain for calculating dctcp_alpha (RFC 8257 4.2)
+        // Start of Lgc Parameters
+        double lgcAlpha = default(0.25);
+        double lgcPhi = default(2.78);
+        double lgcLogP = default(1.4);
+        double lgcCoef = default(20.0);
+        double lgcDataRate @unit(bps) = default(100Mbps);
+        // End Of Lgc Parameters
+
         @display("i=block/wheelbarrow");
         @signal[tcpConnectionAdded];
         @signal[tcpConnectionRemoved];
