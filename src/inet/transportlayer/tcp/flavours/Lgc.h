@@ -54,12 +54,13 @@ class INET_API Lgc : public TcpReno
     /** Constructor */
     Lgc();
 
-    /** Redefine what should happen when data got acked, to add congestion window management */
+    virtual void recalculateSlowStartThreshold() override;
+
+    /** Redefine what should happen when data got acked,
+     * to add congestion window management */
     virtual void receivedDataAck(uint32_t firstSeqAcked) override;
-
-    virtual bool shouldMarkAck() override;
-
-    virtual void processEcnInEstablished() override;
+    void LgcProcessRateUpdate();
+    void LgcReset();
 };
 
 } // namespace tcp

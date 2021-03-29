@@ -25,15 +25,17 @@ namespace tcp {
 
 LgcFamilyStateVariables::LgcFamilyStateVariables()
 {
-    lgc_alpha = 0.2;
-    lgc_phi = 2.78;
-    lgc_logP = 1.4;
-    lgc_coef = 20;
-    lgc_datarate = 100000000; // 100Mbps
-    lgc_windEnd = snd_una;
+    lgc_alpha       = 0.2;
+    lgc_phi         = 2.78;
+    lgc_logP        = 1.4;
+    lgc_coef        = 20;
+    lgc_datarate    = 100000000; // 100Mbps
+    lgc_rate        = 0;
+    lgc_cntr        = 0;
+    lgc_windEnd     = snd_una;
     lgc_bytesMarked = 0;
-    lgc_bytesAcked = 0;
-    lgc_fraction = 0.0;
+    lgc_bytesAcked  = 0;
+    lgc_fraction    = 0.0;
 }
 
 std::string LgcFamilyStateVariables::str() const
@@ -45,6 +47,7 @@ std::string LgcFamilyStateVariables::str() const
     out << " lgc_logP=" << lgc_logP;
     out << " lgc_coef=" << lgc_coef;
     out << " lgc_datarate=" << lgc_datarate;
+    out << " lgc_rate=" << lgc_rate;
     out << " lgc_windEnd=" << lgc_windEnd;
     out << " lgc_bytesAcked=" << lgc_bytesAcked;
     out << " lgc_bytesMarked=" << lgc_bytesMarked;
@@ -62,6 +65,7 @@ std::string LgcFamilyStateVariables::detailedInfo() const
     out << " lgc_logP=" << lgc_logP;
     out << " lgc_coef=" << lgc_coef;
     out << " lgc_datarate=" << lgc_datarate;
+    out << " lgc_rate=" << lgc_rate;
     out << " lgc_windEnd=" << lgc_windEnd;
     out << " lgc_bytesAcked=" << lgc_bytesAcked;
     out << " lgc_bytesMarked=" << lgc_bytesMarked;
