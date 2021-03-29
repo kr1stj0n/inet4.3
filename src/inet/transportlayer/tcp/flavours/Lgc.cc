@@ -108,9 +108,9 @@ void Lgc::LgcProcessRateUpdate()
         double q = ( -log(1 - state->lgc_fraction)  / log(state->lgc_phi));
 
         double gradient = (1 - state->lgc_rate / state->lgc_datarate - q );
-        double gr = pow(lgc_coef,
+        double gr = pow(state->lgc_coef,
                         -(state->lgc_bytesMarked / state->lgc_bytesAcked)) *
-                    log(lgc_logP);
+                    log(state->lgc_logP);
 
         double newRate = state->lgc_rate + gr * state->lgc_rate * gradient;
         if(newRate > 2 * state->lgc_rate)
