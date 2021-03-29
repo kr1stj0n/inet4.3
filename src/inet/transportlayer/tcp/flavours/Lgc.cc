@@ -83,10 +83,10 @@ void Lgc::LgcProcessRateUpdate()
 {
     if (state->lgc_cntr == 0) {
         state->lgc_rate = (state->snd_cwnd * 8 / (double)state->srtt.dbl());
-        if (rateVector && simTime() >= conn->tcpMain->par("param3"))
-            rateVector->record(state->ecnnum_Rate);
+        /* if (rateVector && simTime() >= conn->tcpMain->par("param3")) */
+            /* rateVector->record(state->ecnnum_Rate); */
 
-        state->ecnnum_cntr++;
+        state->lgc_cntr = 1;
     }
 
     if (state->lgc_bytesMarked / state->lgc_bytesAcked >= 0.9)
@@ -108,8 +108,9 @@ void Lgc::LgcProcessRateUpdate()
         double q = ( -log(1-state->lgc_fraction)  / log(state->lgc_phi));
 
         double gradient = (1 - state->lgc_rate / state->lgc_datarate - q );
-        double gr = pow(coef, -(state->lgc_bytesMarked / state->lgc_bytesAcked)
-                        * log(logP));
+        double gr = pow(lgc_coef,
+                        -(state->lgc_bytesMarked / state->lgc_bytesAcked)) *
+                    log(logP);
 
         double newRate = state->lgc_rate + gr * state->lgc_rate * gradient;
         if(newRate > 2 * state->lgc_rate)

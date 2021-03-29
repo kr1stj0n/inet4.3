@@ -43,6 +43,7 @@ class INET_API LgcFamilyStateVariables : public TcpTahoeRenoFamilyStateVariables
     double lgc_rate;
     uint32_t lgc_cntr;
     uint32_t lgc_nextSeq;
+    uint32_t lgc_windEnd;
     uint32_t lgc_bytesMarked; // amount of bytes marked
     uint32_t lgc_bytesAcked;
     double lgc_fraction;
