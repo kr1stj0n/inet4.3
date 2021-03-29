@@ -104,20 +104,20 @@ void Lgc::LgcProcessRateUpdate()
     /* if (calcLoadVector && simTime() >= conn->tcpMain->par("param3")) */
     /*     calcLoadVector->record(state->ecnnum_fraction); */
 
-    {
-        double q = ( -log(1-state->lgc_fraction)  / log(state->lgc_phi));
+    //{
+        double q = ( -log(1 - state->lgc_fraction)  / log(state->lgc_phi));
 
         double gradient = (1 - state->lgc_rate / state->lgc_datarate - q );
         double gr = pow(lgc_coef,
                         -(state->lgc_bytesMarked / state->lgc_bytesAcked)) *
-                    log(logP);
+                    log(lgc_logP);
 
         double newRate = state->lgc_rate + gr * state->lgc_rate * gradient;
         if(newRate > 2 * state->lgc_rate)
             state->lgc_rate *= 2;
         else
             state->lgc_rate = newRate;
-    }
+    //}
 
     if (state->lgc_rate <= 0)
         state->lgc_rate = 0.01;
